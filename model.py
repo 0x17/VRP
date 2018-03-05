@@ -45,4 +45,4 @@ def parse_results(inst, Xijm):
     tours = [[(i, j) for i in inst.I for j in inst.I if Xijm[i][j][m].x == 1.0] for m in inst.M]
     print(tours)
     edges = [edge for m in inst.M for edge in tours[m]]
-    utils.plot_graph(inst.I, edges, out_name='solution')
+    utils.plot_graph(inst.I, edges, inst.vertex_labels(), inst.edge_labels(edges), 'solution')

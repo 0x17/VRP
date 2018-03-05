@@ -9,6 +9,15 @@ class Instance:
         self.wi = wi
         self.b = b
 
+    def vertex_labels(self):
+        return {i: f'{i} ({self.wi[i]})' for i in self.I}
+
+    def edge_labels(self, edges):
+        return {(i, j): str(self.cij[i][j]) for i, j in edges}
+
+    def undirected_edges(self):
+        return [(i, j) for i in self.I for j in self.I if i < j]
+
 
 def instance_from_dict(obj):
     return Instance(*[obj[field] for field in ['I', 'M', 'cij', 'wi', 'b']])
@@ -30,13 +39,10 @@ def example_instance():
     wi = [0, 8, 10, 2]
 
     # wagenkapazität
-    b = 20
+    b = 18
 
     return Instance(I, M, cij, wi, b)
 
 
 def visualize_instance(inst: Instance):
-    edges = [ (i,j) for i in inst.I for j in inst.I if i < j ]
-    edgelbls = { (i,j): str(inst.cij[i][j]) for i,j in edges }
-    nodelbls = { i: f'{i} ({inst.wi[i]})' for i in inst.I }
-    utils.plot_graph(inst.I, edges, nodelbls, edgelbls, 'instance', 'graph')
+    utils.plot_graph(inst.I, inst.undirected_edges(), inst.vertex_labels(), inst.edge_labels(inst.undirected_edges()), 'instance', 'graph')
